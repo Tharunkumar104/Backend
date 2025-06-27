@@ -6,22 +6,37 @@ const userRoute = require('./routes/user');
 
 const app = express();
 
-// Allow requests from frontend
-app.use(cors({ origin: 'http://localhost:3000' }));
+// ✅ CORS setup: Allow frontend from both localhost and production
+const allowedOrigins = [
+    'http://localhost:3000',
+    'https://your-frontend-domain.onrender.com' // <-- replace with your deployed frontend URL
+];
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 
-// Middleware to parse JSON requests
+// ✅ Middleware
 app.use(express.json());
 
-// MongoDB Connection
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URL)
-    .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.error("MongoDB connection error:", err.message));
+// ✅ MongoDB Connection
+mongoose.connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => console.log('✅ MongoDB connected'))
+    .catch((err) => console.error("❌ MongoDB connection error:", err.message));
 
-// API Routes
+// ✅ Routes
 app.use('/api/users', userRoute);
 
-// Start the server
-app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
+// ✅ Optional root route
+app.get('/', (req, res) => {
+    res.send('API working: Hello from backend');
+});
+
+// ✅ Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });
