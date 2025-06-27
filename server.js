@@ -9,7 +9,7 @@ const app = express();
 // ✅ CORS setup: Allow frontend from both localhost and production
 const allowedOrigins = [
     'http://localhost:3000',
-    'https://your-frontend-domain.onrender.com' // <-- replace with your deployed frontend URL
+    // 'https://your-frontend-domain.onrender.com' // <-- replace with your deployed frontend URL
 ];
 app.use(cors({
     origin: allowedOrigins,
