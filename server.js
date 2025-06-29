@@ -6,11 +6,11 @@ const userRoute = require('./routes/user');
 
 const app = express();
 
-// ✅ Smart CORS setup: Allow localhost + Vercel frontend after deployment
+// ✅ CORS setup: Allow localhost (dev) and your deployed Vercel frontend
 const allowedOrigins = [
     'http://localhost:5173', // Vite dev server
-    'http://localhost:3000', // If you ever use CRA or testing
-    'https://your-frontend.vercel.app' // <-- Replace with actual Vercel frontend URL after deployment
+    'http://localhost:3000', // (optional) CRA/dev
+    'https://frontend-8n8m.vercel.app' // <-- Replace with your actual Vercel domain!
 ];
 
 app.use(cors({
@@ -29,7 +29,10 @@ app.use(cors({
 app.use(express.json());
 
 // ✅ MongoDB Connection
-mongoose.connect(process.env.MONGODB_URL)
+mongoose.connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => console.log('✅ MongoDB connected'))
     .catch((err) => console.error("❌ MongoDB connection error:", err.message));
 
