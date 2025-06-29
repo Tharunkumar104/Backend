@@ -8,8 +8,7 @@ const app = express();
 
 // ✅ CORS setup: Allow localhost (dev) and your deployed Vercel frontend
 const allowedOrigins = [
-    'http://localhost:5173', // Vite dev server
-    'http://localhost:3000', // (optional) CRA/dev
+    'http://localhost:5173', // Vite dev server // (optional) CRA/dev
     'https://frontend-8n8m.vercel.app' // <-- Replace with your actual Vercel domain!
 ];
 
