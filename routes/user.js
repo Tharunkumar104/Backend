@@ -19,12 +19,24 @@ userRoute.get('/', async (req, res) => {
     }
 });
 
-// ✅ Get user by ID
+// ✅ Get user by ID (all fields except password)
 userRoute.get('/:id', async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).select('-password');
         if (!user) return res.status(404).json({ error: "User not found" });
         res.status(200).json(user);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+// ✅ Get user profile (only name and email) for Profile.jsx
+userRoute.get('/profile/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('name email');
+        if (!user) return res.status(404).json({ error: "User not found" });
+        res.status(200).json({ name: user.name, email: user.email });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
