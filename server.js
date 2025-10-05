@@ -2,14 +2,17 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 const userRoute = require('./routes/user');
+const notesRoute = require('./routes/notes'); // Add this line
 
 const app = express();
 
 // ✅ CORS setup: Allow localhost (dev) and your deployed Vercel frontend
 const allowedOrigins = [
-    'http://localhost:5173', // Vite dev server // (optional) CRA/dev
-    'https://frontend-8n8m.vercel.app' // <-- Replace with your actual Vercel domain!
+    'http://localhost:5173', // Vite dev server
+    'https://frontend-gray-delta-23.vercel.app', // Your actual Vercel domain
+    'https://frontend-8n8m.vercel.app' // Previous domain (if still using)
 ];
 
 app.use(cors({
@@ -26,6 +29,7 @@ app.use(cors({
 
 // ✅ Middleware
 app.use(express.json());
+app.use(express.static('uploads')); // Serve uploaded files
 
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URL, {
@@ -37,6 +41,7 @@ mongoose.connect(process.env.MONGODB_URL, {
 
 // ✅ Routes
 app.use('/api/users', userRoute);
+app.use('/api/notes', notesRoute); // Add this line
 
 // ✅ Root Test Route
 app.get('/', (req, res) => {
